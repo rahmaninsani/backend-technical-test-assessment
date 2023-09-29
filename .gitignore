@@ -29,3 +29,6 @@ gen
 # Go workspace file
 go.work
 
+# Env
+.env
+
