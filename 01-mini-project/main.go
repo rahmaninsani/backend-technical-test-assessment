@@ -8,6 +8,7 @@ import (
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/config"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/exception"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/handler"
+	customMiddleware "github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/middleware"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/repository"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/router"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/usecase"
@@ -35,18 +36,20 @@ func main() {
 	e.Use(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Recover())
 	
-	// Repositories
 	userRepository := repository.NewUserRepository(db)
+	postRepository := repository.NewUserRepository(db)
 	
-	// Use Cases
 	userUseCase := usecase.NewUserUseCase(userRepository)
+	postUseCase := usecase.NewUserUseCase(postRepository)
 	
-	// Handlers
 	userHandler := handler.NewUserHandler(userUseCase)
+	postHandler := handler.NewUserHandler(postUseCase)
 	
-	// Routers
+	jwtMiddleware := customMiddleware.JWTMiddleware(userRepository)
+	
 	api := e.Group("/api")
-	router.NewUserRouter(api, userHandler)
+	router.NewUserRouter(api, userHandler, []echo.MiddlewareFunc{jwtMiddleware})
+	router.NewPostRouter(api, postHandler, []echo.MiddlewareFunc{jwtMiddleware})
 	
 	address := fmt.Sprintf(":%s", config.Constant.AppPort)
 	e.Logger.Fatal(e.Start(address))

@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/model/domain"
@@ -29,4 +30,20 @@ func GenerateToken(user *domain.User, ttl time.Duration, secretKey string) (stri
 	}
 	
 	return signedToken, nil
+}
+
+func ValidateToken(encodedToken string, secretKey string) (*jwt.Token, error) {
+	token, err := jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
+		if method, ok := token.Method.(*jwt.SigningMethodHMAC); !ok || method != jwt.SigningMethodHS256 {
+			return nil, fmt.Errorf("signing method invalid")
+		}
+		
+		return []byte(secretKey), nil
+	})
+	
+	if err != nil {
+		return nil, err
+	}
+	
+	return token, nil
 }

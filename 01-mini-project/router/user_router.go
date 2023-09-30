@@ -5,9 +5,10 @@ import (
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/handler"
 )
 
-func NewUserRouter(group *echo.Group, userHandler handler.UserHandler) {
+func NewUserRouter(group *echo.Group, userHandler handler.UserHandler, middlewares []echo.MiddlewareFunc) {
 	user := group.Group("/users")
 	
 	user.POST("", userHandler.Register)
 	user.POST("/login", userHandler.Login)
+	
 }
