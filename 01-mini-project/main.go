@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/app"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/config"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/exception"
 	"log"
@@ -17,17 +18,19 @@ func init() {
 }
 
 func main() {
-	app := echo.New()
-	app.HTTPErrorHandler = exception.HTTPErrorHandler
+	_ = app.NewDB()
 	
-	app.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+	e := echo.New()
+	e.HTTPErrorHandler = exception.HTTPErrorHandler
+	
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `[${time_rfc3339}] ${status} ${method} ${host} ${path} ${latency_human}` + "\n",
-		Output: app.Logger.Output(),
+		Output: e.Logger.Output(),
 	}))
-	app.Use(middleware.CORS())
-	app.Use(middleware.RemoveTrailingSlash())
-	app.Use(middleware.Recover())
+	e.Use(middleware.CORS())
+	e.Use(middleware.RemoveTrailingSlash())
+	e.Use(middleware.Recover())
 	
 	address := fmt.Sprintf(":%s", config.Constant.AppPort)
-	app.Logger.Fatal(app.Start(address))
+	e.Logger.Fatal(e.Start(address))
 }

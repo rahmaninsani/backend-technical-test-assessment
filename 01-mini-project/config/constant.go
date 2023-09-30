@@ -12,6 +12,8 @@ type constant struct {
 	DBPassword string `mapstructure:"DB_PASSWORD"`
 	DBName     string `mapstructure:"DB_NAME"`
 	DBPort     string `mapstructure:"DB_PORT"`
+	DBSSLMode  string `mapstructure:"DB_SSL_MODE"`
+	DBTimezone string `mapstructure:"DB_TIMEZONE"`
 }
 
 var Constant = constant{}
