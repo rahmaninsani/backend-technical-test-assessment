@@ -37,13 +37,13 @@ func main() {
 	e.Use(middleware.Recover())
 	
 	userRepository := repository.NewUserRepository(db)
-	postRepository := repository.NewUserRepository(db)
+	postRepository := repository.NewPostRepository(db)
 	
 	userUseCase := usecase.NewUserUseCase(userRepository)
-	postUseCase := usecase.NewUserUseCase(postRepository)
+	postUseCase := usecase.NewPostUseCase(postRepository)
 	
 	userHandler := handler.NewUserHandler(userUseCase)
-	postHandler := handler.NewUserHandler(postUseCase)
+	postHandler := handler.NewPostHandler(postUseCase)
 	
 	jwtMiddleware := customMiddleware.JWTMiddleware(userRepository)
 	

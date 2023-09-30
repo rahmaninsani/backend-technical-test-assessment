@@ -3,6 +3,6 @@ package usecase
 import "github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/model/web"
 
 type UserUseCase interface {
-	Register(request web.UserRegisterRequest) (web.UserResponse, error)
-	Login(request web.UserLoginRequest) (web.UserLoginResponse, error)
+	Register(payload web.UserRegisterRequest) (web.UserResponse, error)
+	Login(payload web.UserLoginRequest) (web.UserLoginResponse, error)
 }

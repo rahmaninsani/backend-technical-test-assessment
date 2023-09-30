@@ -39,3 +39,17 @@ func ToUserLoginResponse(accessToken, refreshToken string) web.UserLoginResponse
 		RefreshToken: refreshToken,
 	}
 }
+
+func ToPostResponse(post domain.Post, user domain.User) web.PostResponse {
+	return web.PostResponse{
+		Title:   post.Title,
+		Content: post.Content,
+		Author: web.PostAuthorResponse{
+			Name:     user.Name,
+			Username: user.Username,
+		},
+		Slug:      post.Slug,
+		CreatedAt: post.CreatedAt,
+		UpdatedAt: post.UpdatedAt,
+	}
+}
