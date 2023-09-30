@@ -32,3 +32,10 @@ func ToUserResponse(user domain.User) web.UserResponse {
 		UpdatedAt: user.UpdatedAt,
 	}
 }
+
+func ToUserLoginResponse(accessToken, refreshToken string) web.UserLoginResponse {
+	return web.UserLoginResponse{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}
+}

@@ -4,4 +4,5 @@ import "github.com/rahmaninsani/backend-technical-test-assessment/01-mini-projec
 
 type UserUseCase interface {
 	Register(request web.UserRegisterRequest) (web.UserResponse, error)
+	Login(request web.UserLoginRequest) (web.UserLoginResponse, error)
 }

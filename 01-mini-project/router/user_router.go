@@ -9,4 +9,5 @@ func NewUserRouter(group *echo.Group, userHandler handler.UserHandler) {
 	user := group.Group("/users")
 	
 	user.POST("", userHandler.Register)
+	user.POST("/login", userHandler.Login)
 }

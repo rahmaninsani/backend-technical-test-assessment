@@ -6,4 +6,5 @@ import (
 
 type UserHandler interface {
 	Register(c echo.Context) error
+	Login(c echo.Context) error
 }

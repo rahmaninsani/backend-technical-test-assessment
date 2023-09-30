@@ -14,6 +14,9 @@ type constant struct {
 	DBPort     string `mapstructure:"DB_PORT"`
 	DBSSLMode  string `mapstructure:"DB_SSL_MODE"`
 	DBTimezone string `mapstructure:"DB_TIMEZONE"`
+	
+	AccessTokenSecretKey  string `mapstructure:"ACCESS_TOKEN_SECRET_KEY"`
+	RefreshTokenSecretKey string `mapstructure:"REFRESH_TOKEN_SECRET_KEY"`
 }
 
 var Constant = constant{}
