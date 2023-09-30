@@ -1,7 +1,8 @@
 package web
 
 type Response struct {
-	Code   int         `json:"code"`
-	Status string      `json:"status"`
-	Data   interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Status  string      `json:"status"`
+	Message interface{} `json:"message,omitempty" metadata:",optional"`
+	Data    interface{} `json:"data,omitempty" metadata:",optional"`
 }

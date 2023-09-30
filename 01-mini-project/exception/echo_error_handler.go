@@ -13,15 +13,15 @@ func HTTPErrorHandler(err error, c echo.Context) {
 	
 	if errors.As(err, &httpError) {
 		response = &web.Response{
-			Code:   httpError.Code,
-			Status: http.StatusText(httpError.Code),
-			Data:   httpError.Message,
+			Code:    httpError.Code,
+			Status:  http.StatusText(httpError.Code),
+			Message: httpError.Message,
 		}
 	} else {
 		response = &web.Response{
-			Code:   http.StatusInternalServerError,
-			Status: http.StatusText(http.StatusInternalServerError),
-			Data:   err.Error(),
+			Code:    http.StatusInternalServerError,
+			Status:  http.StatusText(http.StatusInternalServerError),
+			Message: err.Error(),
 		}
 	}
 	
