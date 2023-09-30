@@ -16,7 +16,9 @@ type constant struct {
 	DBTimezone string `mapstructure:"DB_TIMEZONE"`
 	
 	AccessTokenSecretKey  string `mapstructure:"ACCESS_TOKEN_SECRET_KEY"`
+	AccessTokenExpiresIn  int    `mapstructure:"ACCESS_TOKEN_EXPIRES_IN"`
 	RefreshTokenSecretKey string `mapstructure:"REFRESH_TOKEN_SECRET_KEY"`
+	RefreshTokenExpiresIn int    `mapstructure:"REFRESH_TOKEN_EXPIRES_IN"`
 }
 
 var Constant = constant{}

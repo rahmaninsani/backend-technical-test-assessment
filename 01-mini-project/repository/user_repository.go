@@ -6,5 +6,5 @@ import (
 
 type UserRepository interface {
 	Save(user domain.User) (domain.User, error)
-	FindOne(email string) (domain.User, error)
+	FindOneByEmail(email string) (domain.User, error)
 }

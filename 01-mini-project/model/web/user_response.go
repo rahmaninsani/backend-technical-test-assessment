@@ -16,5 +16,5 @@ type UserResponse struct {
 
 type UserLoginResponse struct {
 	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
+	RefreshToken string `json:"refresh_token,omitempty" metadata:",optional"`
 }

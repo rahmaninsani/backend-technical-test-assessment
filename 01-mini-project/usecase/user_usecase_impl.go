@@ -40,7 +40,7 @@ func (useCase UserUseCaseImpl) Register(payload web.UserRegisterRequest) (web.Us
 }
 
 func (useCase UserUseCaseImpl) Login(payload web.UserLoginRequest) (web.UserLoginResponse, error) {
-	user, err := useCase.UserRepository.FindOne(payload.Email)
+	user, err := useCase.UserRepository.FindOneByEmail(payload.Email)
 	if err != nil {
 		return web.UserLoginResponse{}, err
 	}
@@ -49,14 +49,15 @@ func (useCase UserUseCaseImpl) Login(payload web.UserLoginRequest) (web.UserLogi
 	if err != nil {
 		return web.UserLoginResponse{}, err
 	}
-	accessTokenExpirationTime := time.Now().Add(1 * time.Hour)
-	accessToken, err := helper.GenerateToken(&user, accessTokenExpirationTime, config.Constant.AccessTokenSecretKey)
+	
+	accessTokenExpiresIn := time.Duration(config.Constant.AccessTokenExpiresIn) * time.Minute
+	accessToken, err := helper.GenerateToken(&user, accessTokenExpiresIn, config.Constant.AccessTokenSecretKey)
 	if err != nil {
 		return web.UserLoginResponse{}, err
 	}
 	
-	refreshTokenExpirationTime := time.Now().Add(24 * time.Hour)
-	refreshToken, err := helper.GenerateToken(&user, refreshTokenExpirationTime, config.Constant.RefreshTokenSecretKey)
+	refreshTokenExpiresIn := time.Duration(config.Constant.RefreshTokenExpiresIn) * time.Minute
+	refreshToken, err := helper.GenerateToken(&user, refreshTokenExpiresIn, config.Constant.RefreshTokenSecretKey)
 	if err != nil {
 		return web.UserLoginResponse{}, err
 	}

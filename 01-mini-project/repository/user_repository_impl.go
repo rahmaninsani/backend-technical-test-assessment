@@ -20,7 +20,7 @@ func (repository UserRepositoryImpl) Save(user domain.User) (domain.User, error)
 	return user, nil
 }
 
-func (repository UserRepositoryImpl) FindOne(email string) (domain.User, error) {
+func (repository UserRepositoryImpl) FindOneByEmail(email string) (domain.User, error) {
 	var user domain.User
 	
 	if err := repository.DB.Debug().

@@ -2,10 +2,12 @@ package handler
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/config"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/helper"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/model/web"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/usecase"
 	"net/http"
+	"time"
 )
 
 type UserHandlerImpl struct {
@@ -53,9 +55,24 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Wrong email or password")
 	}
 	
+	c.SetCookie(&http.Cookie{
+		Name:     "access_token",
+		Value:    user.AccessToken,
+		Path:     "/",
+		Expires:  time.Now().Add(time.Duration(config.Constant.AccessTokenExpiresIn) * time.Minute),
+		HttpOnly: true,
+	})
+	
+	c.SetCookie(&http.Cookie{
+		Name:     "refresh_token",
+		Value:    user.RefreshToken,
+		Path:     "/",
+		Expires:  time.Now().Add(time.Duration(config.Constant.RefreshTokenExpiresIn) * time.Minute),
+		HttpOnly: true,
+	})
+	
 	userLoginResponse := web.UserLoginResponse{
-		AccessToken:  user.AccessToken,
-		RefreshToken: user.RefreshToken,
+		AccessToken: user.AccessToken,
 	}
 	
 	response := helper.Response(http.StatusOK, userLoginResponse, err)
