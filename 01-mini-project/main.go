@@ -1,10 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/config"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/exception"
+	"log"
 )
+
+func init() {
+	err := config.LoadConstant()
+	if err != nil {
+		log.Fatalln("Failed to load environment variables\n", err.Error())
+	}
+}
 
 func main() {
 	app := echo.New()
@@ -18,5 +28,6 @@ func main() {
 	app.Use(middleware.RemoveTrailingSlash())
 	app.Use(middleware.Recover())
 	
-	app.Logger.Fatal(app.Start(":1323"))
+	address := fmt.Sprintf(":%s", config.Constant.AppPort)
+	app.Logger.Fatal(app.Start(address))
 }
