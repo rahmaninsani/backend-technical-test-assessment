@@ -39,6 +39,6 @@ func (handler CategoryHandlerImpl) FindAll(c echo.Context) error {
 		return err
 	}
 	
-	response := helper.Response(http.StatusCreated, categoryResponses, err)
+	response := helper.Response(http.StatusOK, categoryResponses, err)
 	return c.JSON(http.StatusOK, response)
 }
