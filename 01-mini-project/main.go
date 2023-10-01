@@ -41,7 +41,7 @@ func main() {
 	categoryRepository := repository.NewCategoryRepository(db)
 	
 	userUseCase := usecase.NewUserUseCase(userRepository)
-	postUseCase := usecase.NewPostUseCase(postRepository)
+	postUseCase := usecase.NewPostUseCase(postRepository, categoryRepository)
 	categoryUseCase := usecase.NewCategoryUseCase(categoryRepository)
 	
 	userHandler := handler.NewUserHandler(userUseCase)

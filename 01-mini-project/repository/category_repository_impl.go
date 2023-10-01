@@ -13,11 +13,11 @@ func NewCategoryRepository(db *gorm.DB) CategoryRepository {
 	return &CategoryRepositoryImpl{DB: db}
 }
 
-func (repository CategoryRepositoryImpl) Save(post domain.Category) (domain.Category, error) {
-	if err := repository.DB.Debug().Create(&post).Error; err != nil {
+func (repository CategoryRepositoryImpl) Save(category domain.Category) (domain.Category, error) {
+	if err := repository.DB.Debug().Create(&category).Error; err != nil {
 		return domain.Category{}, err
 	}
-	return post, nil
+	return category, nil
 }
 
 func (repository CategoryRepositoryImpl) FindAll() ([]domain.Category, error) {
@@ -30,4 +30,15 @@ func (repository CategoryRepositoryImpl) FindAll() ([]domain.Category, error) {
 	}
 	
 	return categories, nil
+}
+
+func (repository CategoryRepositoryImpl) FindOne(category domain.Category) (domain.Category, error) {
+	if err := repository.DB.Debug().
+		Where(&category).
+		First(&category).
+		Error; err != nil {
+		return domain.Category{}, err
+	}
+	
+	return category, nil
 }

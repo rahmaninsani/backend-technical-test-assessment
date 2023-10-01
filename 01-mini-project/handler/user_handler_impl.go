@@ -26,18 +26,9 @@ func (handler UserHandlerImpl) Register(c echo.Context) error {
 		return err
 	}
 	
-	user, err := handler.UserUseCase.Register(payload)
+	userResponse, err := handler.UserUseCase.Register(payload)
 	if err != nil {
 		return err
-	}
-	
-	userResponse := web.UserResponse{
-		Name:      user.Name,
-		Username:  user.Username,
-		Email:     user.Email,
-		Avatar:    user.Avatar,
-		CreatedAt: user.CreatedAt,
-		UpdatedAt: user.UpdatedAt,
 	}
 	
 	response := helper.Response(http.StatusCreated, userResponse, err)
@@ -50,21 +41,21 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 		return err
 	}
 	
-	user, err := handler.UserUseCase.Login(payload)
+	userLoginResponse, err := handler.UserUseCase.Login(payload)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Wrong email or password")
 	}
 	
 	c.SetCookie(&http.Cookie{
 		Name:     "refresh_token",
-		Value:    user.RefreshToken,
+		Value:    userLoginResponse.RefreshToken,
 		Path:     "/",
 		Expires:  time.Now().Add(time.Duration(config.Constant.RefreshTokenExpiresIn) * time.Minute),
 		HttpOnly: true,
 	})
 	
-	userLoginResponse := web.UserLoginResponse{
-		AccessToken: user.AccessToken,
+	userLoginResponse = web.UserLoginResponse{
+		AccessToken: userLoginResponse.AccessToken,
 	}
 	
 	response := helper.Response(http.StatusOK, userLoginResponse, err)
@@ -81,11 +72,11 @@ func (handler UserHandlerImpl) RefreshAccessToken(c echo.Context) error {
 		RefreshToken: refreshTokenCookie.Value,
 	}
 	
-	token, err := handler.UserUseCase.RefreshAccessToken(payload)
+	refreshAccessTokenResponse, err := handler.UserUseCase.RefreshAccessToken(payload)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
 	}
 	
-	response := helper.Response(http.StatusOK, token, err)
+	response := helper.Response(http.StatusOK, refreshAccessTokenResponse, err)
 	return c.JSON(http.StatusOK, response)
 }

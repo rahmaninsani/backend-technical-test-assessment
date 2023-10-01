@@ -5,6 +5,7 @@ import (
 )
 
 type CategoryRepository interface {
-	Save(user domain.Category) (domain.Category, error)
+	Save(category domain.Category) (domain.Category, error)
 	FindAll() ([]domain.Category, error)
+	FindOne(category domain.Category) (domain.Category, error)
 }

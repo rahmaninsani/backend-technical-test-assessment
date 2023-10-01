@@ -26,6 +26,7 @@ func Response(code int, data interface{}, err error) *web.Response {
 func ToUserResponse(user domain.User) web.UserResponse {
 	return web.UserResponse{
 		Name:      user.Name,
+		Username:  user.Username,
 		Email:     user.Email,
 		Avatar:    user.Avatar,
 		CreatedAt: user.CreatedAt,
@@ -46,15 +47,19 @@ func ToUserRefreshAccessTokenResponse(accessToken string) web.UserRefreshAccessT
 	}
 }
 
-func ToPostResponse(post domain.Post, user domain.User) web.PostResponse {
+func ToPostResponse(post domain.Post, category domain.Category, user domain.User) web.PostResponse {
 	return web.PostResponse{
 		Title:   post.Title,
 		Content: post.Content,
+		Slug:    post.Slug,
+		Category: web.PostCategoryResponse{
+			Id:   category.Id,
+			Name: category.Name,
+		},
 		Author: web.PostAuthorResponse{
 			Name:     user.Name,
 			Username: user.Username,
 		},
-		Slug:      post.Slug,
 		CreatedAt: post.CreatedAt,
 		UpdatedAt: post.UpdatedAt,
 	}

@@ -5,5 +5,5 @@ import (
 )
 
 type PostRepository interface {
-	Save(user domain.Post) (domain.Post, error)
+	Save(post domain.Post) (domain.Post, error)
 }
