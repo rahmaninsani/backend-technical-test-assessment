@@ -6,4 +6,5 @@ import (
 
 type CategoryUseCase interface {
 	Create(payload web.CategoryCreateRequest) (web.CategoryResponse, error)
+	FindAll() ([]web.CategoryResponse, error)
 }

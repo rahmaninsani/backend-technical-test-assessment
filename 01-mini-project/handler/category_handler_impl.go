@@ -32,3 +32,13 @@ func (handler CategoryHandlerImpl) Create(c echo.Context) error {
 	response := helper.Response(http.StatusCreated, categoryResponse, err)
 	return c.JSON(http.StatusCreated, response)
 }
+
+func (handler CategoryHandlerImpl) FindAll(c echo.Context) error {
+	categoryResponses, err := handler.CategoryUseCase.FindAll()
+	if err != nil {
+		return err
+	}
+	
+	response := helper.Response(http.StatusCreated, categoryResponses, err)
+	return c.JSON(http.StatusOK, response)
+}

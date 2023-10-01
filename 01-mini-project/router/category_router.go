@@ -9,4 +9,5 @@ func NewCategoryRouter(group *echo.Group, categoryHandler handler.CategoryHandle
 	category := group.Group("/categories")
 	
 	category.POST("", categoryHandler.Create, middlewares...)
+	category.GET("", categoryHandler.FindAll, middlewares...)
 }

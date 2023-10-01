@@ -19,3 +19,15 @@ func (repository CategoryRepositoryImpl) Save(post domain.Category) (domain.Cate
 	}
 	return post, nil
 }
+
+func (repository CategoryRepositoryImpl) FindAll() ([]domain.Category, error) {
+	var categories []domain.Category
+	
+	if err := repository.DB.Debug().
+		Find(&categories).
+		Error; err != nil {
+		return categories, err
+	}
+	
+	return categories, nil
+}

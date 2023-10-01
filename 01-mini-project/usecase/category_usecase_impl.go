@@ -27,3 +27,12 @@ func (useCase CategoryUseCaseImpl) Create(payload web.CategoryCreateRequest) (we
 	
 	return helper.ToCategoryResponse(category), nil
 }
+
+func (useCase CategoryUseCaseImpl) FindAll() ([]web.CategoryResponse, error) {
+	categories, err := useCase.CategoryRepository.FindAll()
+	if err != nil {
+		return []web.CategoryResponse{}, err
+	}
+	
+	return helper.ToCategoryResponses(categories), nil
+}

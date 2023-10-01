@@ -6,4 +6,5 @@ import (
 
 type CategoryHandler interface {
 	Create(c echo.Context) error
+	FindAll(c echo.Context) error
 }
