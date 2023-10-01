@@ -74,7 +74,7 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 func (handler UserHandlerImpl) RefreshAccessToken(c echo.Context) error {
 	refreshTokenCookie, err := c.Cookie("refresh_token")
 	if err != nil {
-		return echo.NewHTTPError(http.StatusForbidden, "Refresh access token not found")
+		return echo.NewHTTPError(http.StatusForbidden, "Refresh token not found")
 	}
 	
 	payload := web.UserRefreshAccessTokenRequest{
