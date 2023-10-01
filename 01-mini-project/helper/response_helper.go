@@ -47,7 +47,7 @@ func ToUserRefreshAccessTokenResponse(accessToken string) web.UserRefreshAccessT
 	}
 }
 
-func ToPostResponse(post domain.Post, category domain.Category, user domain.User) web.PostResponse {
+func ToPostResponse(post domain.Post, category domain.Category, tags []string, user domain.User) web.PostResponse {
 	return web.PostResponse{
 		Title:   post.Title,
 		Content: post.Content,
@@ -56,6 +56,7 @@ func ToPostResponse(post domain.Post, category domain.Category, user domain.User
 			Id:   category.Id,
 			Name: category.Name,
 		},
+		Tags: tags,
 		Author: web.PostAuthorResponse{
 			Name:     user.Name,
 			Username: user.Username,

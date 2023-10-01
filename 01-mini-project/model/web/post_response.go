@@ -20,6 +20,7 @@ type PostResponse struct {
 	Content   string               `json:"content"`
 	Slug      string               `json:"slug"`
 	Category  PostCategoryResponse `json:"category"`
+	Tags      []string             `json:"tags"`
 	Author    PostAuthorResponse   `json:"author"`
 	CreatedAt time.Time            `json:"created_at"`
 	UpdatedAt time.Time            `json:"updated_at"`
