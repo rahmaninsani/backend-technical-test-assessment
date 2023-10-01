@@ -11,5 +11,5 @@ type Category struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	
-	PostCategories []PostCategory
+	Posts []Post
 }

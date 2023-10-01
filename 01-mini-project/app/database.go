@@ -23,10 +23,9 @@ func NewDB() *gorm.DB {
 	
 	models := []interface{}{
 		&domain.User{},
-		&domain.Post{},
 		&domain.Category{},
+		&domain.Post{},
 		&domain.Tag{},
-		&domain.PostCategory{},
 		&domain.PostTag{},
 	}
 	
