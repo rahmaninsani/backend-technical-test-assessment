@@ -40,6 +40,12 @@ func ToUserLoginResponse(accessToken, refreshToken string) web.UserLoginResponse
 	}
 }
 
+func ToUserRefreshAccessTokenResponse(accessToken string) web.UserRefreshAccessTokenResponse {
+	return web.UserRefreshAccessTokenResponse{
+		AccessToken: accessToken,
+	}
+}
+
 func ToPostResponse(post domain.Post, user domain.User) web.PostResponse {
 	return web.PostResponse{
 		Title:   post.Title,

@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"github.com/google/uuid"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/config"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/helper"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/model/domain"
@@ -63,4 +64,30 @@ func (useCase UserUseCaseImpl) Login(payload web.UserLoginRequest) (web.UserLogi
 	}
 	
 	return helper.ToUserLoginResponse(accessToken, refreshToken), nil
+}
+
+func (useCase UserUseCaseImpl) RefreshAccessToken(payload web.UserRefreshAccessTokenRequest) (web.UserRefreshAccessTokenResponse, error) {
+	tokenClaims, err := helper.ValidateToken(payload.RefreshToken, config.Constant.RefreshTokenSecretKey)
+	if err != nil {
+		return web.UserRefreshAccessTokenResponse{}, err
+	}
+	
+	userIdString := tokenClaims["user_id"].(string)
+	userId, err := uuid.Parse(userIdString)
+	if err != nil {
+		return web.UserRefreshAccessTokenResponse{}, err
+	}
+	
+	user, err := useCase.UserRepository.FindOneByUserId(userId)
+	if err != nil {
+		return web.UserRefreshAccessTokenResponse{}, err
+	}
+	
+	accessTokenExpiresIn := time.Duration(config.Constant.AccessTokenExpiresIn) * time.Minute
+	accessToken, err := helper.GenerateToken(&user, accessTokenExpiresIn, config.Constant.AccessTokenSecretKey)
+	if err != nil {
+		return web.UserRefreshAccessTokenResponse{}, err
+	}
+	
+	return helper.ToUserRefreshAccessTokenResponse(accessToken), nil
 }

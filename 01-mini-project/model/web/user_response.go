@@ -17,3 +17,7 @@ type UserLoginResponse struct {
 	AccessToken  string `json:"access_token"`
 	RefreshToken string `json:"refresh_token,omitempty" metadata:",optional"`
 }
+
+type UserRefreshAccessTokenResponse struct {
+	AccessToken string `json:"access_token"`
+}

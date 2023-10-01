@@ -56,14 +56,6 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 	}
 	
 	c.SetCookie(&http.Cookie{
-		Name:     "access_token",
-		Value:    user.AccessToken,
-		Path:     "/",
-		Expires:  time.Now().Add(time.Duration(config.Constant.AccessTokenExpiresIn) * time.Minute),
-		HttpOnly: true,
-	})
-	
-	c.SetCookie(&http.Cookie{
 		Name:     "refresh_token",
 		Value:    user.RefreshToken,
 		Path:     "/",
@@ -76,5 +68,24 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 	}
 	
 	response := helper.Response(http.StatusOK, userLoginResponse, err)
+	return c.JSON(http.StatusOK, response)
+}
+
+func (handler UserHandlerImpl) RefreshAccessToken(c echo.Context) error {
+	refreshTokenCookie, err := c.Cookie("refresh_token")
+	if err != nil {
+		return echo.NewHTTPError(http.StatusForbidden, "Refresh access token not found")
+	}
+	
+	payload := web.UserRefreshAccessTokenRequest{
+		RefreshToken: refreshTokenCookie.Value,
+	}
+	
+	token, err := handler.UserUseCase.RefreshAccessToken(payload)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
+	}
+	
+	response := helper.Response(http.StatusOK, token, err)
 	return c.JSON(http.StatusOK, response)
 }

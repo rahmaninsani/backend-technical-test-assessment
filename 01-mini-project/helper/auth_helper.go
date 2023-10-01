@@ -32,7 +32,7 @@ func GenerateToken(user *domain.User, ttl time.Duration, secretKey string) (stri
 	return signedToken, nil
 }
 
-func ValidateToken(encodedToken string, secretKey string) (*jwt.Token, error) {
+func ValidateToken(encodedToken string, secretKey string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
 		if method, ok := token.Method.(*jwt.SigningMethodHMAC); !ok || method != jwt.SigningMethodHS256 {
 			return nil, fmt.Errorf("signing method invalid")
@@ -45,5 +45,10 @@ func ValidateToken(encodedToken string, secretKey string) (*jwt.Token, error) {
 		return nil, err
 	}
 	
-	return token, nil
+	tokenClaims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, err
+	}
+	
+	return tokenClaims, nil
 }

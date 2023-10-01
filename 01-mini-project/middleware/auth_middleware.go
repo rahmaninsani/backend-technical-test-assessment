@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"net/http"
 	"strings"
@@ -21,17 +20,12 @@ func JWTMiddleware(userRepository repository.UserRepository) echo.MiddlewareFunc
 			}
 			
 			tokenString := strings.SplitN(authHeader, " ", 2)[1]
-			token, err := helper.ValidateToken(tokenString, config.Constant.AccessTokenSecretKey)
+			tokenClaims, err := helper.ValidateToken(tokenString, config.Constant.AccessTokenSecretKey)
 			if err != nil {
-				return echo.NewHTTPError(http.StatusUnauthorized, err)
+				return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
 			}
 			
-			claims, ok := token.Claims.(jwt.MapClaims)
-			if !ok || !token.Valid {
-				return echo.NewHTTPError(http.StatusUnauthorized, "Token is not valid")
-			}
-			
-			userIdString := claims["user_id"].(string)
+			userIdString := tokenClaims["user_id"].(string)
 			userId, err := uuid.Parse(userIdString)
 			if err != nil {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Invalid User ID format")
