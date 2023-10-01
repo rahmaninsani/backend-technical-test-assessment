@@ -9,5 +9,6 @@ func NewPostRouter(group *echo.Group, postHandler handler.PostHandler, middlewar
 	post := group.Group("/posts")
 	
 	post.POST("", postHandler.Create, middlewares...)
+	post.PUT("/:slug", postHandler.Update, middlewares...)
 	
 }

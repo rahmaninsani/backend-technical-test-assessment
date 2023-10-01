@@ -6,4 +6,5 @@ import (
 
 type PostHandler interface {
 	Create(c echo.Context) error
+	Update(c echo.Context) error
 }

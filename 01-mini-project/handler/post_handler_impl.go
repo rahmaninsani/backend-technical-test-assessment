@@ -34,3 +34,23 @@ func (handler PostHandlerImpl) Create(c echo.Context) error {
 	response := helper.Response(http.StatusCreated, postResponse, err)
 	return c.JSON(http.StatusCreated, response)
 }
+
+func (handler PostHandlerImpl) Update(c echo.Context) error {
+	user := c.Get("user").(domain.User)
+	slug := c.Param("slug")
+	payload := web.PostUpdateRequest{
+		Slug: slug,
+	}
+	
+	if err := c.Bind(&payload); err != nil {
+		return err
+	}
+	
+	postResponse, err := handler.PostUseCase.Update(payload, user)
+	if err != nil {
+		return err
+	}
+	
+	response := helper.Response(http.StatusOK, postResponse, err)
+	return c.JSON(http.StatusOK, response)
+}

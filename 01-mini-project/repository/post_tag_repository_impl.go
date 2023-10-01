@@ -19,3 +19,11 @@ func (repository PostTagRepositoryImpl) Save(postTag domain.PostTag) (domain.Pos
 	}
 	return postTag, nil
 }
+
+func (repository PostTagRepositoryImpl) Delete(postTag domain.PostTag) error {
+	if err := repository.DB.Debug().Delete(&domain.PostTag{}, postTag.PostId).Error; err != nil {
+		return err
+	}
+	
+	return nil
+}

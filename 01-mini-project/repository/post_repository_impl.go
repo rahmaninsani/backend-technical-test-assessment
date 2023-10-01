@@ -19,3 +19,21 @@ func (repository PostRepositoryImpl) Save(post domain.Post) (domain.Post, error)
 	}
 	return post, nil
 }
+
+func (repository PostRepositoryImpl) FindOne(post domain.Post) (domain.Post, error) {
+	if err := repository.DB.Debug().
+		Where(&post).
+		First(&post).
+		Error; err != nil {
+		return domain.Post{}, err
+	}
+	
+	return post, nil
+}
+
+func (repository PostRepositoryImpl) Update(post domain.Post) (domain.Post, error) {
+	if err := repository.DB.Debug().Save(&post).Error; err != nil {
+		return domain.Post{}, err
+	}
+	return post, nil
+}
