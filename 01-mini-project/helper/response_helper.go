@@ -59,3 +59,12 @@ func ToPostResponse(post domain.Post, user domain.User) web.PostResponse {
 		UpdatedAt: post.UpdatedAt,
 	}
 }
+
+func ToCategoryResponse(category domain.Category) web.CategoryResponse {
+	return web.CategoryResponse{
+		Id:        category.Id,
+		Name:      category.Name,
+		CreatedAt: category.CreatedAt,
+		UpdatedAt: category.UpdatedAt,
+	}
+}

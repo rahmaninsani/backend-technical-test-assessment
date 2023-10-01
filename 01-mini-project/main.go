@@ -38,18 +38,22 @@ func main() {
 	
 	userRepository := repository.NewUserRepository(db)
 	postRepository := repository.NewPostRepository(db)
+	categoryRepository := repository.NewCategoryRepository(db)
 	
 	userUseCase := usecase.NewUserUseCase(userRepository)
 	postUseCase := usecase.NewPostUseCase(postRepository)
+	categoryUseCase := usecase.NewCategoryUseCase(categoryRepository)
 	
 	userHandler := handler.NewUserHandler(userUseCase)
 	postHandler := handler.NewPostHandler(postUseCase)
+	categoryHandler := handler.NewCategoryHandler(categoryUseCase)
 	
 	jwtMiddleware := customMiddleware.JWTMiddleware(userRepository)
 	
 	api := e.Group("/api")
 	router.NewUserRouter(api, userHandler, []echo.MiddlewareFunc{jwtMiddleware})
 	router.NewPostRouter(api, postHandler, []echo.MiddlewareFunc{jwtMiddleware})
+	router.NewCategoryRouter(api, categoryHandler, []echo.MiddlewareFunc{jwtMiddleware})
 	
 	address := fmt.Sprintf(":%s", config.Constant.AppPort)
 	e.Logger.Fatal(e.Start(address))
