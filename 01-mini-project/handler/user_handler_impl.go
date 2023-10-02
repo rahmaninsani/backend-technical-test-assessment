@@ -87,15 +87,26 @@ func (handler UserHandlerImpl) GetProfile(c echo.Context) error {
 		Username: username,
 	}
 
-	if err := c.Bind(&payload); err != nil {
-		return err
-	}
-
 	userResponse, err := handler.UserUseCase.GetProfile(payload)
 	if err != nil {
 		return err
 	}
 
 	response := helper.Response(http.StatusOK, userResponse, err)
+	return c.JSON(http.StatusOK, response)
+}
+
+func (handler UserHandlerImpl) GetPostList(c echo.Context) error {
+	username := c.Param("username")
+	payload := web.UserPostListRequest{
+		Username: username,
+	}
+
+	userPostResponses, err := handler.UserUseCase.GetPostList(payload)
+	if err != nil {
+		return err
+	}
+
+	response := helper.Response(http.StatusOK, userPostResponses, err)
 	return c.JSON(http.StatusOK, response)
 }

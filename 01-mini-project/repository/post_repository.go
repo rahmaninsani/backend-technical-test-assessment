@@ -7,6 +7,7 @@ import (
 type PostRepository interface {
 	Save(post domain.Post) (domain.Post, error)
 	FindOne(post domain.Post) (domain.Post, error)
+	FindAll(post domain.Post) ([]domain.Post, error)
 	Update(post domain.Post) (domain.Post, error)
 	Delete(post domain.Post) error
 }

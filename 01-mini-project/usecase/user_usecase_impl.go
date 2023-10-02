@@ -12,11 +12,18 @@ import (
 )
 
 type UserUseCaseImpl struct {
-	UserRepository repository.UserRepository
+	UserRepository     repository.UserRepository
+	PostRepository     repository.PostRepository
+	CategoryRepository repository.CategoryRepository
 }
 
-func NewUserUseCase(userRepository repository.UserRepository) UserUseCase {
-	return &UserUseCaseImpl{UserRepository: userRepository}
+func NewUserUseCase(userRepository repository.UserRepository, postRepository repository.PostRepository,
+	categoryRepository repository.CategoryRepository) UserUseCase {
+	return &UserUseCaseImpl{
+		UserRepository:     userRepository,
+		PostRepository:     postRepository,
+		CategoryRepository: categoryRepository,
+	}
 }
 
 func (useCase UserUseCaseImpl) Register(payload web.UserRegisterRequest) (web.UserResponse, error) {
@@ -111,4 +118,35 @@ func (useCase UserUseCaseImpl) GetProfile(payload web.UserProfileRequest) (web.U
 	}
 
 	return helper.ToUserResponse(user), nil
+}
+
+func (useCase UserUseCaseImpl) GetPostList(payload web.UserPostListRequest) ([]web.UserPostListResponse, error) {
+	user := domain.User{
+		Username: payload.Username,
+	}
+
+	user, err := useCase.UserRepository.FindOne(user)
+	if err != nil {
+		return []web.UserPostListResponse{}, err
+	}
+
+	posts, err := useCase.PostRepository.FindAll(domain.Post{
+		UserId: user.Id,
+	})
+
+	if err != nil {
+		return []web.UserPostListResponse{}, err
+	}
+
+	var userPostListResponses []web.UserPostListResponse
+	for _, post := range posts {
+		category, err := useCase.CategoryRepository.FindOne(domain.Category{Id: post.CategoryId})
+		if err != nil {
+			return []web.UserPostListResponse{}, err
+		}
+
+		userPostListResponses = append(userPostListResponses, helper.ToUserPostListResponse(post, category))
+	}
+
+	return userPostListResponses, nil
 }

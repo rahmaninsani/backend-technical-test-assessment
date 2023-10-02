@@ -19,3 +19,7 @@ type UserRefreshAccessTokenRequest struct {
 type UserProfileRequest struct {
 	Username string `json:"username"`
 }
+
+type UserPostListRequest struct {
+	Username string `json:"username"`
+}

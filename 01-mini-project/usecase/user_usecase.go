@@ -7,4 +7,5 @@ type UserUseCase interface {
 	Login(payload web.UserLoginRequest) (web.UserLoginResponse, error)
 	RefreshAccessToken(payload web.UserRefreshAccessTokenRequest) (web.UserRefreshAccessTokenResponse, error)
 	GetProfile(payload web.UserProfileRequest) (web.UserResponse, error)
+	GetPostList(payload web.UserPostListRequest) ([]web.UserPostListResponse, error)
 }

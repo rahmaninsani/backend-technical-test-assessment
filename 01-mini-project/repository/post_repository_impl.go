@@ -27,7 +27,7 @@ func (repository PostRepositoryImpl) FindOne(post domain.Post) (domain.Post, err
 		Error; err != nil {
 		return domain.Post{}, err
 	}
-	
+
 	return post, nil
 }
 
@@ -42,6 +42,19 @@ func (repository PostRepositoryImpl) Delete(post domain.Post) error {
 	if err := repository.DB.Debug().Delete(&domain.Post{}, post.Id).Error; err != nil {
 		return err
 	}
-	
+
 	return nil
+}
+
+func (repository PostRepositoryImpl) FindAll(post domain.Post) ([]domain.Post, error) {
+	var posts []domain.Post
+
+	if err := repository.DB.Debug().
+		Where(&post).
+		Find(&posts).
+		Error; err != nil {
+		return posts, err
+	}
+
+	return posts, nil
 }

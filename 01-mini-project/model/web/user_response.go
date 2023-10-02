@@ -21,3 +21,11 @@ type UserLoginResponse struct {
 type UserRefreshAccessTokenResponse struct {
 	AccessToken string `json:"access_token"`
 }
+
+type UserPostListResponse struct {
+	Title     string               `json:"title"`
+	Slug      string               `json:"slug"`
+	Category  PostCategoryResponse `json:"category"`
+	CreatedAt time.Time            `json:"created_at"`
+	UpdatedAt time.Time            `json:"updated_at"`
+}

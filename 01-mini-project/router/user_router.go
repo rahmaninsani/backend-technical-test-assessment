@@ -7,10 +7,11 @@ import (
 
 func NewUserRouter(group *echo.Group, userHandler handler.UserHandler, middlewares []echo.MiddlewareFunc) {
 	user := group.Group("/users")
-	
+
 	user.POST("", userHandler.Register)
 	user.POST("/login", userHandler.Login)
 	user.GET("/refresh", userHandler.RefreshAccessToken)
-	
+
 	user.GET("/:username", userHandler.GetProfile)
+	user.GET("/:username/posts", userHandler.GetPostList)
 }

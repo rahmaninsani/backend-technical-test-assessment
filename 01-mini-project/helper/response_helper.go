@@ -11,15 +11,15 @@ func Response(code int, data interface{}, err error) *web.Response {
 		Code:   code,
 		Status: http.StatusText(code),
 	}
-	
+
 	if data != nil {
 		response.Data = data
 	}
-	
+
 	if err != nil {
 		response.Message = err.Error()
 	}
-	
+
 	return response
 }
 
@@ -77,10 +77,24 @@ func ToCategoryResponse(category domain.Category) web.CategoryResponse {
 
 func ToCategoryResponses(categories []domain.Category) []web.CategoryResponse {
 	var categoryResponses []web.CategoryResponse
-	
+
 	for _, category := range categories {
 		categoryResponses = append(categoryResponses, ToCategoryResponse(category))
 	}
-	
+
 	return categoryResponses
+}
+
+func ToUserPostListResponse(post domain.Post, category domain.Category) web.UserPostListResponse {
+
+	return web.UserPostListResponse{
+		Title: post.Title,
+		Slug:  post.Slug,
+		Category: web.PostCategoryResponse{
+			Id:   category.Id,
+			Name: category.Name,
+		},
+		CreatedAt: post.CreatedAt,
+		UpdatedAt: post.UpdatedAt,
+	}
 }
