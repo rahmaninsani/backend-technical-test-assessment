@@ -54,3 +54,19 @@ func (handler PostHandlerImpl) Update(c echo.Context) error {
 	response := helper.Response(http.StatusOK, postResponse, err)
 	return c.JSON(http.StatusOK, response)
 }
+
+func (handler PostHandlerImpl) Delete(c echo.Context) error {
+	user := c.Get("user").(domain.User)
+	slug := c.Param("slug")
+	payload := web.PostDeleteRequest{
+		Slug: slug,
+	}
+	
+	err := handler.PostUseCase.Delete(payload, user)
+	if err != nil {
+		return err
+	}
+	
+	response := helper.Response(http.StatusOK, nil, err)
+	return c.JSON(http.StatusOK, response)
+}

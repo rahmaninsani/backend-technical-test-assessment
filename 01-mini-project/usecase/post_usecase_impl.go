@@ -156,3 +156,22 @@ func (useCase PostUseCaseImpl) Update(payload web.PostUpdateRequest, user domain
 	
 	return helper.ToPostResponse(post, category, tags, user), nil
 }
+
+func (useCase PostUseCaseImpl) Delete(payload web.PostDeleteRequest, user domain.User) error {
+	post, err := useCase.PostRepository.FindOne(domain.Post{Slug: payload.Slug})
+	if err != nil || post.UserId != user.Id {
+		return err
+	}
+	
+	err = useCase.PostTagRepository.Delete(domain.PostTag{PostId: post.Id})
+	if err != nil {
+		return err
+	}
+	
+	err = useCase.PostRepository.Delete(post)
+	if err != nil {
+		return err
+	}
+	
+	return nil
+}

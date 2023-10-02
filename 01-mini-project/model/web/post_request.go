@@ -16,3 +16,7 @@ type PostUpdateRequest struct {
 	Slug       string    `json:"slug"`
 	Tags       []string  `json:"tags"`
 }
+
+type PostDeleteRequest struct {
+	Slug string `json:"slug"`
+}
