@@ -44,7 +44,7 @@ func maxProductOfThree(nums []int) int {
 }
 
 func main() {
-	nums := [][]int{
+	numList := [][]int{
 		{1, 2, 3},
 		{-10, -10, 1, 3, 2},
 		{1, 2, 3, 4, 5},
@@ -52,8 +52,8 @@ func main() {
 		{-5, 0, 1, 2, 3},
 	}
 
-	for _, num := range nums {
-		result := maxProductOfThree(num)
-		fmt.Printf("Hasil %v: %d\n", num, result)
+	for _, nums := range numList {
+		result := maxProductOfThree(nums)
+		fmt.Printf("Hasil %v: %d\n", nums, result)
 	}
 }
