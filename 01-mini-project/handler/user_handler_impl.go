@@ -25,12 +25,12 @@ func (handler UserHandlerImpl) Register(c echo.Context) error {
 	if err := c.Bind(&payload); err != nil {
 		return err
 	}
-	
+
 	userResponse, err := handler.UserUseCase.Register(payload)
 	if err != nil {
 		return err
 	}
-	
+
 	response := helper.Response(http.StatusCreated, userResponse, err)
 	return c.JSON(http.StatusCreated, response)
 }
@@ -40,12 +40,12 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 	if err := c.Bind(&payload); err != nil {
 		return err
 	}
-	
+
 	userLoginResponse, err := handler.UserUseCase.Login(payload)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Wrong email or password")
 	}
-	
+
 	c.SetCookie(&http.Cookie{
 		Name:     "refresh_token",
 		Value:    userLoginResponse.RefreshToken,
@@ -53,11 +53,11 @@ func (handler UserHandlerImpl) Login(c echo.Context) error {
 		Expires:  time.Now().Add(time.Duration(config.Constant.RefreshTokenExpiresIn) * time.Minute),
 		HttpOnly: true,
 	})
-	
+
 	userLoginResponse = web.UserLoginResponse{
 		AccessToken: userLoginResponse.AccessToken,
 	}
-	
+
 	response := helper.Response(http.StatusOK, userLoginResponse, err)
 	return c.JSON(http.StatusOK, response)
 }
@@ -67,16 +67,35 @@ func (handler UserHandlerImpl) RefreshAccessToken(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusForbidden, "Refresh token not found")
 	}
-	
+
 	payload := web.UserRefreshAccessTokenRequest{
 		RefreshToken: refreshTokenCookie.Value,
 	}
-	
+
 	refreshAccessTokenResponse, err := handler.UserUseCase.RefreshAccessToken(payload)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusUnauthorized, err.Error())
 	}
-	
+
 	response := helper.Response(http.StatusOK, refreshAccessTokenResponse, err)
+	return c.JSON(http.StatusOK, response)
+}
+
+func (handler UserHandlerImpl) GetProfile(c echo.Context) error {
+	username := c.Param("username")
+	payload := web.UserProfileRequest{
+		Username: username,
+	}
+
+	if err := c.Bind(&payload); err != nil {
+		return err
+	}
+
+	userResponse, err := handler.UserUseCase.GetProfile(payload)
+	if err != nil {
+		return err
+	}
+
+	response := helper.Response(http.StatusOK, userResponse, err)
 	return c.JSON(http.StatusOK, response)
 }

@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"github.com/google/uuid"
 	"github.com/rahmaninsani/backend-technical-test-assessment/01-mini-project/model/domain"
 	"gorm.io/gorm"
 )
@@ -21,28 +20,13 @@ func (repository UserRepositoryImpl) Save(user domain.User) (domain.User, error)
 	return user, nil
 }
 
-func (repository UserRepositoryImpl) FindOneByEmail(email string) (domain.User, error) {
-	var user domain.User
-	
+func (repository UserRepositoryImpl) FindOne(user domain.User) (domain.User, error) {
 	if err := repository.DB.Debug().
-		Where("email = (?)", email).
+		Where(&user).
 		First(&user).
 		Error; err != nil {
 		return domain.User{}, err
 	}
-	
-	return user, nil
-}
 
-func (repository UserRepositoryImpl) FindOneByUserId(userId uuid.UUID) (domain.User, error) {
-	var user domain.User
-	
-	if err := repository.DB.Debug().
-		Where("id = (?)", userId).
-		First(&user).
-		Error; err != nil {
-		return domain.User{}, err
-	}
-	
 	return user, nil
 }

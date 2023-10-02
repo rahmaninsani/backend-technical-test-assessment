@@ -11,4 +11,6 @@ func NewUserRouter(group *echo.Group, userHandler handler.UserHandler, middlewar
 	user.POST("", userHandler.Register)
 	user.POST("/login", userHandler.Login)
 	user.GET("/refresh", userHandler.RefreshAccessToken)
+	
+	user.GET("/:username", userHandler.GetProfile)
 }

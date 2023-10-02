@@ -8,4 +8,5 @@ type UserHandler interface {
 	Register(c echo.Context) error
 	Login(c echo.Context) error
 	RefreshAccessToken(c echo.Context) error
+	GetProfile(c echo.Context) error
 }
