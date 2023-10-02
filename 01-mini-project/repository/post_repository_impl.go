@@ -22,6 +22,7 @@ func (repository PostRepositoryImpl) Save(post domain.Post) (domain.Post, error)
 
 func (repository PostRepositoryImpl) FindOne(post domain.Post) (domain.Post, error) {
 	if err := repository.DB.Debug().
+		Preload("PostTags").
 		Where(&post).
 		First(&post).
 		Error; err != nil {
@@ -29,6 +30,19 @@ func (repository PostRepositoryImpl) FindOne(post domain.Post) (domain.Post, err
 	}
 
 	return post, nil
+}
+
+func (repository PostRepositoryImpl) FindAll(post domain.Post) ([]domain.Post, error) {
+	var posts []domain.Post
+
+	if err := repository.DB.Debug().
+		Where(&post).
+		Find(&posts).
+		Error; err != nil {
+		return posts, err
+	}
+
+	return posts, nil
 }
 
 func (repository PostRepositoryImpl) Update(post domain.Post) (domain.Post, error) {
@@ -44,17 +58,4 @@ func (repository PostRepositoryImpl) Delete(post domain.Post) error {
 	}
 
 	return nil
-}
-
-func (repository PostRepositoryImpl) FindAll(post domain.Post) ([]domain.Post, error) {
-	var posts []domain.Post
-
-	if err := repository.DB.Debug().
-		Where(&post).
-		Find(&posts).
-		Error; err != nil {
-		return posts, err
-	}
-
-	return posts, nil
 }

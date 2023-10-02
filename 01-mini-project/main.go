@@ -43,7 +43,7 @@ func main() {
 	postTagRepository := repository.NewPostTagRepository(db)
 
 	userUseCase := usecase.NewUserUseCase(userRepository, postRepository, categoryRepository)
-	postUseCase := usecase.NewPostUseCase(postRepository, categoryRepository, tagRepository, postTagRepository)
+	postUseCase := usecase.NewPostUseCase(postRepository, categoryRepository, tagRepository, postTagRepository, userRepository)
 	categoryUseCase := usecase.NewCategoryUseCase(categoryRepository)
 
 	userHandler := handler.NewUserHandler(userUseCase)

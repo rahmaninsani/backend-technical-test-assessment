@@ -86,7 +86,6 @@ func ToCategoryResponses(categories []domain.Category) []web.CategoryResponse {
 }
 
 func ToUserPostListResponse(post domain.Post, category domain.Category) web.UserPostListResponse {
-
 	return web.UserPostListResponse{
 		Title: post.Title,
 		Slug:  post.Slug,

@@ -20,3 +20,7 @@ type PostUpdateRequest struct {
 type PostDeleteRequest struct {
 	Slug string `json:"slug"`
 }
+
+type PostFindOneRequest struct {
+	Slug string `json:"slug"`
+}

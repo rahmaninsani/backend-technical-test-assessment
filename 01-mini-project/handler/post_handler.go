@@ -8,4 +8,5 @@ type PostHandler interface {
 	Create(c echo.Context) error
 	Update(c echo.Context) error
 	Delete(c echo.Context) error
+	FindOne(c echo.Context) error
 }

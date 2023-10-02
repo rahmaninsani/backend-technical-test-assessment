@@ -24,13 +24,13 @@ func (handler PostHandlerImpl) Create(c echo.Context) error {
 	if err := c.Bind(&payload); err != nil {
 		return err
 	}
-	
+
 	user := c.Get("user").(domain.User)
 	postResponse, err := handler.PostUseCase.Create(payload, user)
 	if err != nil {
 		return err
 	}
-	
+
 	response := helper.Response(http.StatusCreated, postResponse, err)
 	return c.JSON(http.StatusCreated, response)
 }
@@ -41,16 +41,16 @@ func (handler PostHandlerImpl) Update(c echo.Context) error {
 	payload := web.PostUpdateRequest{
 		Slug: slug,
 	}
-	
+
 	if err := c.Bind(&payload); err != nil {
 		return err
 	}
-	
+
 	postResponse, err := handler.PostUseCase.Update(payload, user)
 	if err != nil {
 		return err
 	}
-	
+
 	response := helper.Response(http.StatusOK, postResponse, err)
 	return c.JSON(http.StatusOK, response)
 }
@@ -61,12 +61,23 @@ func (handler PostHandlerImpl) Delete(c echo.Context) error {
 	payload := web.PostDeleteRequest{
 		Slug: slug,
 	}
-	
+
 	err := handler.PostUseCase.Delete(payload, user)
 	if err != nil {
 		return err
 	}
-	
+
 	response := helper.Response(http.StatusOK, nil, err)
+	return c.JSON(http.StatusOK, response)
+}
+
+func (handler PostHandlerImpl) FindOne(c echo.Context) error {
+	slug := c.Param("slug")
+	post, err := handler.PostUseCase.FindOne(web.PostFindOneRequest{Slug: slug})
+	if err != nil {
+		return err
+	}
+
+	response := helper.Response(http.StatusOK, post, err)
 	return c.JSON(http.StatusOK, response)
 }
